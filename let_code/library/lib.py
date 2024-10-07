@@ -1,5 +1,9 @@
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.expected_conditions import alert_is_present
+
 
 class Base():
 
@@ -113,17 +117,16 @@ class Base():
         element=self.search_for_an_element(locator)
         self.actions.move_to_element(element).perform()
 
-    def drag_and_drop(self, locator):
+    def drag_and_drop(self, locator,locator2):
         source_element = self.search_for_an_element(locator)
-        target_element = self.search_for_an_element(locator)
+        target_element = self.search_for_an_element(locator2)
         self.actions.drag_and_drop(source_element,target_element).perform()
 
     def drag_and_drop_by_offset(self, locator,x,y):
         source_element = self.search_for_an_element(locator)
         self.actions.drag_and_drop_by_offset(source_element,x,y).perform()
 
-    def Scroll_by_amount(self, locator,x,y):
-        self.search_for_an_element(locator)
+    def Scroll_by_amount(self,x,y):
         self.actions.scroll_by_amount(x,y).perform()
 
     def Scroll_by_element(self, locator):
@@ -151,4 +154,23 @@ class Base():
         alert = self.driver.switch_to.alert
         alert.send_keys(text)
 
-        
+    def explicit_wait(self):
+        wait=WebDriverWait(self.driver,12)
+        element=wait.until(alert_is_present())
+        element.accept()
+
+    def select_A_Date(self,month,year):
+        self.driver.find_element("xpath","//a[.='Date & Time']").click()
+        current_month=self.driver.find_element("class name","datepicker-nav-month").text
+        current_year=self.driver.find_element("class name","datepicker-nav-year").text
+
+        while not (current_month.__eq__(month) and current_year.__eq__(year)):
+            nextbtn=self.driver.find_element("xpath","//button[@class='datepicker-nav-next button is-small is-text']")
+            nextbtn.click()
+            current_month = self.driver.find_element("class name", "datepicker-nav-month").text
+            current_year = self.driver.find_element("class name", "datepicker-nav-year").text
+        self.driver.find_element("xpath", "//button[.='3']").click()
+
+
+
+

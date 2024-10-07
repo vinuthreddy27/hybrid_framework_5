@@ -8,5 +8,7 @@ def test_text(driver):
                         "heyy .....",
                         "......",
                         "vinuth",
-                        "id")
+                        "id",
+                        "C:/Users/swath/Downloads/Student Athlete Resume (1).pdf")
+
 
